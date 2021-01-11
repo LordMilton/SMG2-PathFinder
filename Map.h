@@ -4,16 +4,15 @@
 #include <string>
 
 class Map
-{	private:
+{	protected:
 	MapNode *nodes;
 	int moveTime;
+   class MapNode
 	
 	public:
 	virtual bool containsNode(std::string name);
 	
 }
-
-//TODO friend MapNode
 
 
 #endif
