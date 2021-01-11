@@ -4,14 +4,17 @@
 #include <string>
 #include "Star.h"
 
+#define MAX_STARS = 6 //Maximum number of stars in a galaxy should be 6
+#define MAX_SUCCESSORS = 4 //Maximum number of successors should be 4
+
 class Galaxy
 {	private:
 	int numStars;
-	Star* stars[3]; //Maximum number of stars is 3
+	Star* stars[MAX_STARS];
 	bool oneComplete; //At least one star completed
 	bool available;
 	int numSuccessors;
-	Galaxy* successors[4]; //Maximum number of successors should be 4
+	Galaxy* successors[MAX_SUCCESSORS];
 	
 	public:
 	Galaxy(bool available = false);
