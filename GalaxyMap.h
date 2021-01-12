@@ -1,18 +1,18 @@
-#ifndef WORLDMAP_H
-#define WORLDMAP_H
+#ifndef GALAXYMAP_H
+#define GALAXYMAP_H
 
 #include <string>
-#include "World.h"
+#include "Galaxy.h"
 #include "Map.h"
 
-#define MAX_CONNECTIONS = 2 //Worlds are connected to at most 2 other Worlds
+#define MAX_CONNECTIONS = 5 //Galaxies are probably connected to at most 4 other
+                            //Galaxies
 
-class WorldMap: public Map
+class GalaxyMap: public Map
 {	private:
    class MapNode
    {
-      World* world;
-      int numCons;
+      Galaxy* gal;
       MapNode* cons[MAX_CONNECTIONS];
       
       //Adds a connection for this MapNode pointing to the given MapNode
@@ -37,11 +37,10 @@ class WorldMap: public Map
          }
          return false;
       }
-   }
+   }   
    
    public:
-   WorldMap();
-   
+   GalaxyMap();
 }
 
 
