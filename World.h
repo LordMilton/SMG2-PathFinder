@@ -7,18 +7,18 @@
 
 class World
 {  private:
-   String name;
+   std::string name;
    int numGalaxies;
    GalaxyMap* map;
    
    public:
-   World(String name, int numGalaxies, GalaxyMap* galaxyMap);
+   World(std::string name, int numGalaxies, GalaxyMap* galaxyMap);
    
-   String getName();
+   std::string getName();
    
    //Used to access a galaxy in this world by name
 	//Returns NULL if no galaxy in this world exists with the given name
-   Galaxy* containsGalaxy(String name);
+   Galaxy* containsGalaxy(std::string name);
    
 }
 
