@@ -5,14 +5,16 @@
 
 class Map
 {	protected:
-	MapNode *nodes;
-	int moveTime;
    class MapNode;
+   
+	MapNode** nodes;
+   MapNode* head;
+	int moveTime;
 	
 	public:
    //Checks if a node exists in this map with the given name
    //Returns the associated MapNode or NULL if one does not exist
-	virtual MapNode containsNode(std::string name);
+	virtual MapNode* containsNode(std::string name);
    
    //Determines time it takes to traverse from the node with the given name name1
    //to the node with the given name name2
