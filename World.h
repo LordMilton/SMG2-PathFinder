@@ -20,6 +20,6 @@ class World
 	//Returns NULL if no galaxy in this world exists with the given name
    Galaxy* containsGalaxy(std::string name);
    
-}
+};
 
 #endif

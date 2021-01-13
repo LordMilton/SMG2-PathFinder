@@ -4,8 +4,8 @@
 #include <string>
 #include "Star.h"
 
-#define MAX_STARS = 6 //Maximum number of stars in a galaxy should be 6
-#define MAX_SUCCESSORS = 4 //Maximum number of successors should be 4
+#define MAX_STARS 6 //Maximum number of stars in a galaxy should be 6
+#define MAX_SUCCESSORS 4 //Maximum number of successors should be 4
 
 class Galaxy
 {	private:

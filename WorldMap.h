@@ -5,7 +5,7 @@
 #include "World.h"
 #include "Map.h"
 
-#define MAX_CONNECTIONS = 2 //Worlds are connected to at most 2 other Worlds
+#define MAX_WORLD_CONNECTIONS 2 //Worlds are connected to at most 2 other Worlds
 
 class WorldMap: public Map
 {	private:
@@ -13,17 +13,23 @@ class WorldMap: public Map
    {
       World* world;
       int numCons;
-      MapNode* cons[MAX_CONNECTIONS];
+      MapNode* cons[MAX_WORLD_CONNECTIONS];
+      
+      MapNode(World* world)
+      {
+         this->world = world;
+         numCons = 0;
+      }
       
       //Adds a connection for this MapNode pointing to the given MapNode
       //Necessary that both MapNodes exist when connections are added, so can't be done in constructor
       void addCon(MapNode* con)
       {
-         if(numCons < MAX_CONNECTIONS && !conExists(con))
+         if(numCons < MAX_WORLD_CONNECTIONS && !conExists(con))
          {
             cons[numCons++] = con;
          }
-         con.addCon(this);
+         con->addCon(this);
       }
       
       //Returns true if the given connection is already stored, false otherwise
@@ -37,12 +43,12 @@ class WorldMap: public Map
          }
          return false;
       }
-   }
+   };
    
    public:
    WorldMap();
    
-}
+};
 
 
 #endif

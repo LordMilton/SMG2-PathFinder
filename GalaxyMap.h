@@ -5,7 +5,7 @@
 #include "Galaxy.h"
 #include "Map.h"
 
-#define MAX_CONNECTIONS = 5 //Galaxies are probably connected to at most 4 other
+#define MAX_GALAXY_CONNECTIONS 5 //Galaxies are probably connected to at most 4 other
                             //Galaxies
 
 class GalaxyMap: public Map
@@ -13,17 +13,24 @@ class GalaxyMap: public Map
    class MapNode
    {
       Galaxy* gal;
-      MapNode* cons[MAX_CONNECTIONS];
+      int numCons;
+      MapNode* cons[MAX_GALAXY_CONNECTIONS];
+      
+      MapNode(Galaxy* galaxy)
+      {
+         this->gal = galaxy;
+         numCons = 0;
+      }
       
       //Adds a connection for this MapNode pointing to the given MapNode
       //Necessary that both MapNodes exist when connections are added, so can't be done in constructor
       void addCon(MapNode* con)
       {
-         if(numCons < MAX_CONNECTIONS && !conExists(con))
+         if(numCons < MAX_GALAXY_CONNECTIONS && !conExists(con))
          {
             cons[numCons++] = con;
          }
-         con.addCon(this);
+         con->addCon(this);
       }
       
       //Returns true if the given connection is already stored, false otherwise
@@ -37,11 +44,11 @@ class GalaxyMap: public Map
          }
          return false;
       }
-   }   
+   };
    
    public:
    GalaxyMap();
-}
+};
 
 
 #endif
