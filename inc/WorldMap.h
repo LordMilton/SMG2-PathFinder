@@ -9,45 +9,13 @@
 
 class WorldMap: public Map
 {	private:
-   class MapNode
-   {
-      World* world;
-      int numCons;
-      MapNode* cons[MAX_WORLD_CONNECTIONS];
-      
-      MapNode(World* world)
-      {
-         this->world = world;
-         numCons = 0;
-      }
-      
-      //Adds a connection for this MapNode pointing to the given MapNode
-      //Necessary that both MapNodes exist when connections are added, so can't be done in constructor
-      void addCon(MapNode* con)
-      {
-         if(numCons < MAX_WORLD_CONNECTIONS && !conExists(con))
-         {
-            cons[numCons++] = con;
-         }
-         con->addCon(this);
-      }
-      
-      //Returns true if the given connection is already stored, false otherwise
-      //Guard against connection duplication
-      bool conExists(MapNode* con)
-      {
-         for(int i = 0; i < numCons; i++)
-         {
-            if(con == cons[i])
-               return true;
-         }
-         return false;
-      }
-   };
    
    public:
    WorldMap();
    
+   virtual MapNode* containsNode(std::string name);
+	virtual int pathTime(std::string name1, std::string name2);
+   virtual void readMapFromFile(std::string fileName);
 };
 
 
