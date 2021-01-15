@@ -72,7 +72,7 @@ class Map
    virtual void readMapFromFile(std::string fileName)=0;
 };
 
-Map::Map(){}
-Map::~Map(){}
+Map::Map(){} //Placeholder for linker
+Map::~Map(){} //Placeholder for linker
 
 #endif
