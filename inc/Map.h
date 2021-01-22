@@ -10,6 +10,8 @@ class Map
       void* val;
       int numCons;
       int maxCons;
+      //Contains pointers to all connected MapNodes
+      //WARNING: when we start deleting MapNodes, this can have holes (NULL pointers)
       MapNode** cons;
       
       public:
@@ -23,7 +25,10 @@ class Map
       
       ~MapNode()
       {
+         purgeFromConnectedNodes();
          delete cons;
+         cons = NULL;
+         val = NULL;
       }
       
       //Adds a connection for this MapNode pointing to the given MapNode
@@ -43,10 +48,57 @@ class Map
       {
          for(int i = 0; i < numCons; i++)
          {
-            if(con == cons[i])
+            if(cons[i] != NULL && con == cons[i])
                return true;
          }
          return false;
+      }
+      
+      //Returns this MapNodes list of connections with any NULL pointers removed
+      MapNode** getCons(int& size)
+      {
+         MapNode** arr = new MapNode*[numCons];
+         int arrSize = 0;
+         for(int i = 0; i < numCons; i++)
+         {
+            if(cons[i] != NULL)
+            {
+               arr[arrSize++] = cons[i];
+            }
+         }
+         
+         size = arrSize;
+         return arr;
+      }
+      
+      private:
+      //Deletes the specified MapNode from the connection list
+      //Supports cleaner deletion
+      //This should only be used when the whole Map is being deleted
+      //Intention is for it to only be used in our destructor
+      void deleteCon(MapNode* con)
+      {
+         for(int i = 0; i < numCons; i++)
+         {
+            if(cons[i] != NULL && cons[i] == con)
+            {
+               cons[i] == NULL;
+            }
+         }
+      }
+      
+      //Deletes this Node from the cons of all connected nodes
+      //Should be used in preparation for deleting this node
+      //This won't be effective if the graph this Map represents becomes directed
+      void purgeFromConnectedNodes()
+      {
+         for(int i = 0; i < numCons; i++)
+         {
+            if(cons[i] != NULL)
+            {
+               cons[i]->deleteCon(this);
+            }
+         }
       }
    };
    

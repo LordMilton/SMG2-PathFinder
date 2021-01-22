@@ -1,4 +1,5 @@
 #include <string>
+#include <queue>
 #include "GalaxyMap.h"
 
 GalaxyMap::GalaxyMap():Map()
@@ -8,7 +9,22 @@ GalaxyMap::GalaxyMap():Map()
 
 GalaxyMap::~GalaxyMap()
 {
-   
+   std::queue<MapNode*> toDestroy;
+   toDestroy.push(head);
+   while(!toDestroy.empty())
+   {
+      MapNode* next = toDestroy.front();
+      int futureNodesSize = -1;
+      MapNode** futureNodes = next->getCons(futureNodesSize);
+      for(int i = 0; i < futureNodesSize; i++)
+      {
+         toDestroy.push(futureNodes[i]);
+      }
+      delete(futureNodes);
+      futureNodes = NULL;
+      toDestroy.pop(); //This calls the popped MapNodes constructor??
+      next = NULL;
+   }
 }
 
 void* GalaxyMap::containsNode(std::string name)
