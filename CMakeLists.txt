@@ -5,3 +5,5 @@ add_library(PathFinder "")
 
 add_subdirectory(src/)
 add_subdirectory(inc/)
+
+include_directories(inc/)
