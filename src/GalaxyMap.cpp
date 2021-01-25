@@ -22,7 +22,7 @@ GalaxyMap::~GalaxyMap()
       }
       delete(futureNodes);
       futureNodes = NULL;
-      toDestroy.pop(); //This calls the popped MapNodes constructor??
+      toDestroy.pop(); //This calls the popped MapNodes deconstructor??
       next = NULL;
    }
 }
