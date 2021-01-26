@@ -10,6 +10,8 @@
 
 class GalaxyMap: public Map
 {	private:
+   MapNode* prevWorldCon;
+   MapNode* nextWorldCon;
    
    public:
    GalaxyMap();

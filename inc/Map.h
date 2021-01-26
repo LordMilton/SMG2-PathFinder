@@ -117,7 +117,7 @@ class Map
    
    //Determines time it takes to traverse from the node with the given name name1
    //to the node with the given name name2
-   //Returns -1 if either parameter does not refer to an existing node in this Map
+   //Returns -1 if either parameter does not refer to an accessible node
 	virtual int pathTime(std::string name1, std::string name2)=0;
    
    //Reads all the map nodes and connections from a file and builds a map out of them
