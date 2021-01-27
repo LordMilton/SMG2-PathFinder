@@ -1,26 +1,28 @@
 #include <string>
 #include <queue>
+#include <iostream>
 #include "GalaxyMap.h"
 
 GalaxyMap::GalaxyMap():Map()
 {
    moveTime = 500;
+   head = NULL;
 }
 
 GalaxyMap::~GalaxyMap()
 {
    std::queue<MapNode*> toDestroy;
-   toDestroy.push(head);
+   if(head != NULL)
+      toDestroy.push(head);
    while(!toDestroy.empty())
    {
       MapNode* next = toDestroy.front();
       int futureNodesSize = -1;
-      MapNode** futureNodes = next->getCons(futureNodesSize);
+      MapNode** futureNodes = next->getCons(&futureNodesSize);
       for(int i = 0; i < futureNodesSize; i++)
       {
          toDestroy.push(futureNodes[i]);
       }
-      delete(futureNodes);
       futureNodes = NULL;
       toDestroy.pop(); //This calls the popped MapNodes deconstructor??
       next = NULL;
@@ -29,7 +31,7 @@ GalaxyMap::~GalaxyMap()
 
 void* GalaxyMap::containsNode(std::string name)
 {
-   return new Galaxy();
+   return NULL;
 }
 
 int GalaxyMap::pathTime(std::string name1, std::string name2)
