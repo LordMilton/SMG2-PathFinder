@@ -113,8 +113,8 @@ class Map
 	int moveTime;
 	
 	public:
-   Map();
-   ~Map();
+   inline Map();
+   inline ~Map();
    
    //Checks if a node exists in this map with the given name
    //Returns the associated MapNode's value or NULL if one (MapNode or value) does not exist
