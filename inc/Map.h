@@ -62,9 +62,9 @@ class Map
       }
       
       //Returns this MapNodes list of connections with any NULL pointers removed
-      MapNode** getCons(int& size)
+      MapNode** getCons(int* size)
       {
-         MapNode** arr = new MapNode*[numCons];
+         MapNode** arr = new MapNode*[maxCons];
          int arrSize = 0;
          for(int i = 0; i < numCons; i++)
          {
@@ -74,7 +74,7 @@ class Map
             }
          }
          
-         size = arrSize;
+         *size = arrSize;
          return arr;
       }
       
