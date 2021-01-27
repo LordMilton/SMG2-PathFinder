@@ -10,8 +10,13 @@
 
 class GalaxyMap: public Map
 {	private:
+   //MapNodes from connected worlds for pathfinding
    MapNode* prevWorldCon;
    MapNode* nextWorldCon;
+   //Last and first MapNodes from this world so we know
+   //  when we need to jump to another world for pathfinding
+   MapNode* firstNode;
+   MapNode* lastNode;
    
    public:
    GalaxyMap();

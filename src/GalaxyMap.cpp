@@ -29,7 +29,7 @@ GalaxyMap::~GalaxyMap()
 
 void* GalaxyMap::containsNode(std::string name)
 {
-   return (new MapNode(new Galaxy(), 0));
+   return new Galaxy();
 }
 
 int GalaxyMap::pathTime(std::string name1, std::string name2)

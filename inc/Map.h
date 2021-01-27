@@ -7,6 +7,7 @@ class Map
 {	protected:
    class MapNode
    {  private:
+      std::string name; //Name so that even placeholder nodes (ones with no galaxies) can be located
       void* val;
       int numCons;
       int maxCons;
@@ -29,6 +30,12 @@ class Map
          delete cons;
          cons = NULL;
          val = NULL;
+      }
+      
+      //Returns this MapNode's name
+      std::string getName()
+      {
+         return name;
       }
       
       //Adds a connection for this MapNode pointing to the given MapNode
@@ -106,13 +113,12 @@ class Map
 	int moveTime;
 	
 	public:
-   Map(); //Placeholder for linker
-   ~Map(); //Placeholder for linker
+   Map();
+   ~Map();
    
    //Checks if a node exists in this map with the given name
-   //Returns the associated MapNode or NULL if one does not exist
-   //    Return type is void* to fix an issue where MapNode class isn't being
-   //    seen by child classes TODO fix that issue for real
+   //Returns the associated MapNode's value or NULL if one (MapNode or value) does not exist
+   //   This is NOT returning a MapNode
 	virtual void* containsNode(std::string name)=0;
    
    //Determines time it takes to traverse from the node with the given name name1
