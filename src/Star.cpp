@@ -6,8 +6,8 @@ using namespace std;
 Star::Star(string name)
 {
 	this->name = name;
-	time = 600;
-	timeWithMedal = 600;
+	time = 3600000;
+	timeWithMedal = 3600000;
 }
 
 void Star::setTime(int time)
