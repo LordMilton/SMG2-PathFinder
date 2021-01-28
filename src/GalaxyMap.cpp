@@ -3,9 +3,9 @@
 #include <iostream>
 #include "GalaxyMap.h"
 
-GalaxyMap::GalaxyMap():Map()
+GalaxyMap::GalaxyMap(int moveTime):Map()
 {
-   moveTime = 500;
+   this->moveTime = moveTime;
    head = NULL;
 }
 

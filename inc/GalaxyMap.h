@@ -19,7 +19,7 @@ class GalaxyMap: public Map
    MapNode* lastNode;
    
    public:
-   GalaxyMap();
+   GalaxyMap(int moveTime);
    ~GalaxyMap();
 
    void* containsNode(std::string name);
