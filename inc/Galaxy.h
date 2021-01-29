@@ -19,9 +19,9 @@ class Galaxy
 	public:
 	Galaxy(bool available = false);
 	
-	void addStar(Star* toAdd);
+	bool addStar(Star* toAdd);
 	
-	void addSuccessor(Galaxy* toAdd);
+	bool addSuccessor(Galaxy* toAdd);
 
 	//Used to access a star in this galaxy by name
 	//Returns NULL if no star in this galaxy exists with the given name
@@ -32,7 +32,10 @@ class Galaxy
 	
 	//Should be used when any star is completed
 	void oneCompleted();
-	
+   
+	bool isAvailable();
+   
+   private:
 	//Should be used by predecessor to indicate this galaxy is now accessible
 	void makeAvailable();
 };
