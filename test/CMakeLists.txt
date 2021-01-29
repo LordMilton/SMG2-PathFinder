@@ -4,4 +4,5 @@ target_sources(PathFinder
     PRIVATE
         GalaxyMap_Test.cpp
         Star_Test.cpp
+        Galaxy_Test.cpp
 )
