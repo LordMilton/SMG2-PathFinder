@@ -38,7 +38,8 @@ class Map
          return name;
       }
       
-      //Adds a connection for this MapNode pointing to the given MapNode
+      //Adds a connection for this MapNode pointing to the given MapNode *and*
+      //    adds a symmetrical connection from the given MapNode to this MapNode
       //Necessary that both MapNodes exist when connections are added, so can't be done in constructor
       void addCon(MapNode* con)
       {
