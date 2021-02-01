@@ -35,6 +35,13 @@ TEST_F(Galaxy_Test, Constructor)
    EXPECT_FALSE(gal2.isAvailable());
 }
 
+//Tests getName
+TEST_F(Galaxy_Test, GetName)
+{
+   EXPECT_EQ(gal1.getName(), "gal1");
+   EXPECT_EQ(gal3.getName(), "gal3");
+}
+
 //Tests GetStar when Galaxy has no Stars
 TEST_F(Galaxy_Test, GetStar_Name_Empty)
 {
