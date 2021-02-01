@@ -12,13 +12,29 @@ Galaxy::Galaxy(bool available)
 
 bool Galaxy::addStar(Star* toAdd)
 {
-	stars[numStars++] = toAdd;
-   return true;
+   if(numStars < MAX_STARS)
+   {
+      for(int i = 0; i < numStars; i++)
+      {
+         if(toAdd->getName() == stars[i]->getName())
+            return false;
+      }
+      stars[numStars++] = toAdd;
+      return true;
+   }
+   else
+      return false;
 }
 
 bool Galaxy::addSuccessor(Galaxy* toAdd)
 {
-	successors[numSuccessors++] = toAdd;
+   if(numSuccessors < MAX_SUCCESSORS)
+   {
+      successors[numSuccessors++] = toAdd;
+      return true;
+   }
+   else
+      return false;
    return true;
 }
 
