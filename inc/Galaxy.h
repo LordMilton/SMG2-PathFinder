@@ -9,6 +9,7 @@
 
 class Galaxy
 {	private:
+   std::string name;
 	int numStars;
 	Star* stars[MAX_STARS];
 	bool oneComplete; //At least one star completed
@@ -17,8 +18,10 @@ class Galaxy
 	Galaxy* successors[MAX_SUCCESSORS];
 	
 	public:
-	Galaxy(bool available = false);
+	Galaxy(std::string name, bool available = false);
 	
+   std::string getName();
+   
 	bool addStar(Star* toAdd);
 	
 	bool addSuccessor(Galaxy* toAdd);

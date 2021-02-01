@@ -4,10 +4,10 @@
 
 class Galaxy_Test : public testing::Test
 {  protected:
-   Galaxy gal1 = Galaxy(true);
-   Galaxy gal2 = Galaxy(false);
-   Galaxy gal3 = Galaxy(false);
-   Galaxy gal4 = Galaxy(false);
+   Galaxy gal1 = Galaxy("gal1", true);
+   Galaxy gal2 = Galaxy("gal2", false);
+   Galaxy gal3 = Galaxy("gal3", false);
+   Galaxy gal4 = Galaxy("gal4", false);
 
    virtual void SetUp()
    {
@@ -127,9 +127,9 @@ TEST_F(Galaxy_Test, AddStar_Valid)
 //Tests adding too many successors
 TEST_F(Galaxy_Test, AddSuccessor_TooMany)
 {
-   Galaxy gal5 = Galaxy(false);
-   Galaxy gal6 = Galaxy(false);
-   Galaxy gal7 = Galaxy(false);
+   Galaxy gal5 = Galaxy("gal5", false);
+   Galaxy gal6 = Galaxy("gal6", false);
+   Galaxy gal7 = Galaxy("gal7", false);
    gal1.addSuccessor(&gal5);
    gal1.addSuccessor(&gal6);
    EXPECT_FALSE(gal1.addSuccessor(&gal7));
@@ -138,8 +138,8 @@ TEST_F(Galaxy_Test, AddSuccessor_TooMany)
 //Tests adding valid successors
 TEST_F(Galaxy_Test, AddSuccessor_Valid)
 {
-   Galaxy gal5 = Galaxy(false);
-   Galaxy gal6 = Galaxy(false);
+   Galaxy gal5 = Galaxy("gal5", false);
+   Galaxy gal6 = Galaxy("gal6", false);
    EXPECT_TRUE(gal1.addSuccessor(&gal5));
    EXPECT_TRUE(gal1.addSuccessor(&gal6));
 }

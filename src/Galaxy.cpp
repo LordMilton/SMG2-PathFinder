@@ -2,12 +2,18 @@
 
 using namespace std;
 
-Galaxy::Galaxy(bool available)
+Galaxy::Galaxy(string name, bool available)
 {
+   this->name = name;
    numSuccessors = 0;
 	numStars = 0;
 	oneComplete = false;
 	this->available = available;
+}
+
+string Galaxy::getName()
+{
+   return name;
 }
 
 bool Galaxy::addStar(Star* toAdd)
