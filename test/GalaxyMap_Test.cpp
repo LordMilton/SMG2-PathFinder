@@ -21,6 +21,18 @@ class GalaxyMap_Test : public testing::Test
    
 };
 
+//Tests getName after setting
+TEST_F(GalaxyMap_Test, GetName_Set)
+{
+   EXPECT_EQ(map.getName(), "Test World");
+}
+
+//Test getName before setting
+TEST_F(GalaxyMap_Test, GetName_Unset)
+{
+   EXPECT_EQ(emptyMap.getName(), "");
+}
+
 //Tests that missing file is handled properly
 TEST_F(GalaxyMap_Test, ReadMapFromFile_NoFile)
 {
