@@ -29,6 +29,11 @@ GalaxyMap::~GalaxyMap()
    }
 }
 
+std::string GalaxyMap::getName()
+{
+   return name;
+}
+
 void* GalaxyMap::containsNode(std::string name)
 {
    return NULL;

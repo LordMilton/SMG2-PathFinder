@@ -111,11 +111,15 @@ class Map
    };
    
    MapNode* head;
+   std::string name;
 	int moveTime;
 	
 	public:
    inline Map();
    inline ~Map();
+   
+   //Returns this Map's name
+   virtual std::string getName()=0;
    
    //Checks if a node exists in this map with the given name
    //Returns the associated MapNode's value or NULL if one (MapNode or value) does not exist
