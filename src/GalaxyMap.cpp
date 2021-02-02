@@ -5,6 +5,7 @@
 
 GalaxyMap::GalaxyMap(int moveTime):Map()
 {
+   name = "";
    this->moveTime = moveTime;
    head = NULL;
 }
