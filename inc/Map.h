@@ -7,7 +7,6 @@ class Map
 {	protected:
    class MapNode
    {  private:
-      std::string name; //Name so that even placeholder nodes (ones with no galaxies) can be located
       void* val;
       int numCons;
       int maxCons;
@@ -36,12 +35,6 @@ class Map
       void* getVal()
       {
          return val;
-      }
-      
-      //Returns this MapNode's name
-      std::string getName()
-      {
-         return name;
       }
       
       //Adds a connection for this MapNode pointing to the given MapNode *and*
