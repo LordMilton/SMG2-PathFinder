@@ -10,7 +10,7 @@ class GalaxyMap_Test : public testing::Test
 
    virtual void SetUp()
    {
-      map.readMapFromFile("testMap.txt");
+      map.readMapFromFile("../data/Test World");
    }
    
    virtual void TearDown()
