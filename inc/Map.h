@@ -32,6 +32,12 @@ class Map
          val = NULL;
       }
       
+      //Return this MapNode's value
+      void* getVal()
+      {
+         return val;
+      }
+      
       //Returns this MapNode's name
       std::string getName()
       {
@@ -46,8 +52,8 @@ class Map
          if(numCons < maxCons && !conExists(con))
          {
             cons[numCons++] = con;
+            con->addCon(this);
          }
-         con->addCon(this);
       }
       
       //Returns true if the given connection is already stored, false otherwise
