@@ -18,6 +18,10 @@ class GalaxyMap: public Map
    MapNode* firstNode;
    MapNode* lastNode;
    
+   //Helper method for readMapFromFile
+   // Searches a list of MapNodes for one whose value has the matching name
+   GalaxyMap::MapNode* fetchNodeFromArray(MapNode* nodes[], int arrLen, std::string name);
+   
    public:
    GalaxyMap(int moveTime);
    ~GalaxyMap();
