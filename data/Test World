@@ -1,0 +1,23 @@
+Test World
+--- Galaxies ---
+Test Begin-A-
+*Star 1
+*Star 2
+*Star 3
+*Secret Star
+*Comet Star
+Test Middle
+*Star 1
+*Star 2
+Test Middle 2
+Test Middle 3
+*Star 1
+*Secret Star
+Test End
+*Star 1
+*Comet Star
+--- Connections ---
+Test Begin-Test Middle
+Test Middle-Test Middle 2
+Test Middle-Test Middle 3
+Test Middle 2-Test End
