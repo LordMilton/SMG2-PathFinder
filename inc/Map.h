@@ -28,6 +28,8 @@ class Map
          reached = -1;
       }
       
+      //Deallocates connections
+      //Also removes this node from its connections' connections lists
       ~MapNode()
       {
          purgeFromConnectedNodes();
@@ -84,7 +86,7 @@ class Map
       }
       
       //Returns this MapNodes list of connections with any NULL pointers removed
-      MapNode** getCons(int* size)
+      MapNode** getCons(int &size)
       {
          MapNode** arr = new MapNode*[maxCons];
          int arrSize = 0;
@@ -95,8 +97,7 @@ class Map
                arr[arrSize++] = cons[i];
             }
          }
-         
-         *size = arrSize;
+         size = arrSize;
          return arr;
       }
       
@@ -111,7 +112,7 @@ class Map
          {
             if(cons[i] != NULL && cons[i] == con)
             {
-               cons[i] == NULL;
+               cons[i] = NULL;
             }
          }
       }
