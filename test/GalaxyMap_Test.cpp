@@ -49,7 +49,7 @@ TEST_F(GalaxyMap_Test, ContainsNode)
 {
    EXPECT_TRUE(map.containsNode("Test Begin") != NULL);
    EXPECT_TRUE(map.containsNode("Test End") != NULL);
-   EXPECT_TRUE(map.containsNode("Test Mid") != NULL);
+   EXPECT_TRUE(map.containsNode("Test Middle") != NULL);
 }
 
 //Tests pathTime on empty Map
