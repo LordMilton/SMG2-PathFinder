@@ -32,13 +32,14 @@ GalaxyMap::~GalaxyMap()
    {
       MapNode* next = toDestroy.front();
       int futureNodesSize = -1;
-      MapNode** futureNodes = next->getCons(&futureNodesSize);
+      MapNode** futureNodes = next->getCons(futureNodesSize);
       for(int i = 0; i < futureNodesSize; i++)
       {
          toDestroy.push(futureNodes[i]);
       }
       futureNodes = NULL;
-      toDestroy.pop(); //This calls the popped MapNodes deconstructor??
+      toDestroy.pop();
+      delete(next);
       next = NULL;
    }
 }
@@ -50,13 +51,41 @@ std::string GalaxyMap::getName()
 
 void* GalaxyMap::containsNode(std::string name)
 {
-   return NULL;
+   std::queue<MapNode*> que;
+   que.push(head);
+   bool found = false;
+   Galaxy* toReturn = NULL;
+   while(!found && !que.empty())
+   {
+      MapNode* cur = que.front();
+      if(cur->reached < 0)
+      {
+         if(((Galaxy*)(cur->getVal()))->getName() == name)
+         {
+            toReturn = (Galaxy*)(cur->getVal());
+            found = true;
+         }
+         else
+         {
+            int numCons = 0;
+            MapNode** cons = cur->getCons(numCons);
+            for(int i = 0; i < numCons; i++)
+            {
+               que.push(cons[i]);
+            }
+         }
+         cur->reached = 1; //Mark node as searched
+      }
+      
+      que.pop();
+   }
+   head->resetReached();
+   
+   return toReturn;
 }
 
 int GalaxyMap::pathTime(std::string name1, std::string name2)
 {
-   MapNode* startNode = (MapNode*)containsNode(name1);
-   MapNode* endNode = (MapNode*)containsNode(name2);
    
    return -1;
 }
@@ -110,12 +139,16 @@ void GalaxyMap::readMapFromFile(std::string filename)
       lastReadGood = safeReadLine(&specs, nextLine); //Burn separator
       lastReadGood = safeReadLine(&specs, nextLine);
       bool firstGal = true;
-      while(lastReadGood && nextLine != CONNECTIONS_SEPARATOR)
+      while(lastReadGood && (strcmp(nextLine, CONNECTIONS_SEPARATOR)) != 0)
       {
          bool available = false;
+         int cutOff = 0; //How many characters of the line to cut off (takes care of AVAILABLE_MARKER if necessary)
          if(strstr(nextLine, AVAILABLE_MARKER) != NULL)
+         {
             available = true;
-         nextLine[strlen(nextLine) - strlen(AVAILABLE_MARKER)] = '\0'; // Cuts off the AVAILABLE_MARKER
+            cutOff = strlen(AVAILABLE_MARKER);
+         }
+         nextLine[strlen(nextLine) - cutOff] = '\0'; // Cuts off the AVAILABLE_MARKER
          Galaxy* gal = new Galaxy(nextLine, available);
          
          lastReadGood = safeReadLine(&specs, nextLine);
@@ -134,8 +167,6 @@ void GalaxyMap::readMapFromFile(std::string filename)
             firstGal = false;
          }
          nodes[numGalaxies++] = node;
-         
-         lastReadGood = safeReadLine(&specs, nextLine);
       }
       
       //--- Connections ---
@@ -157,6 +188,7 @@ void GalaxyMap::readMapFromFile(std::string filename)
          if(secondNode == NULL)
          {
             std::cout << "\"" << secondGalName << "\" does not name a galaxy in file \"" << filename << "\"\n";
+            badName = true;
          }
          
          if(!badName)
