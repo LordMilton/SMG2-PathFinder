@@ -15,12 +15,17 @@ class Map
       MapNode** cons;
       
       public:
+      //Allows tracking shortest path when path finding
+      // This is only for use by external classes, so it's being left public
+      int reached;
+      
       MapNode(void* val, int maxConnections)
       {
          this->val = val;
          maxCons = maxConnections;
          numCons = 0;
          cons = new MapNode*[maxCons];
+         reached = -1;
       }
       
       ~MapNode()
@@ -29,6 +34,23 @@ class Map
          delete cons;
          cons = NULL;
          val = NULL;
+      }
+      
+      //Resets the reached value for this MapNode and
+      // recursively calls this for all connected MapNodes
+      //As long as a Map contains no island nodes, this only needs to be called on one MapNode
+      // to affect them all
+      void resetReached()
+      {
+         if(reached > 0)
+         {
+            reached = -1;
+            for(int i = 0; i < numCons; i++)
+            {
+               cons[i]->resetReached();
+            }
+         }
+         
       }
       
       //Return this MapNode's value
