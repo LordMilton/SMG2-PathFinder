@@ -7,6 +7,8 @@ class Map
 {	protected:
    class MapNode
    {  private:
+      //The contents of this MapNode
+      //    Should have some kind of identifier for searching
       void* val;
       int numCons;
       int maxCons;
@@ -143,14 +145,17 @@ class Map
    //Returns this Map's name
    virtual std::string getName()=0;
    
-   //Checks if a node exists in this map with the given name
+   //Checks if a node exists in this map with a value with the given identifier
    //Returns the associated MapNode's value or NULL if one (MapNode or value) does not exist
    //   This is NOT returning a MapNode
-	virtual void* containsNode(std::string name)=0;
+	virtual void* containsValue(std::string name)=0;
    
    //Determines time it takes to traverse from the node with the given name name1
    //to the node with the given name name2
-   //Returns -1 if either parameter does not refer to an accessible node
+   //Returns -1 if the first parameter does not refer to a node in this Map or
+   //    if the second paramater does not refer to an accessible node
+   //    (an "accessible" node is a node that is either in this Map, or in another Map that this
+   //     map is somehow connected to)
 	virtual int pathTime(std::string name1, std::string name2)=0;
    
    //Reads all the map nodes and connections from a file and builds a map out of them

@@ -13,7 +13,7 @@ class WorldMap: public Map
    public:
    WorldMap();
    
-   virtual MapNode* containsNode(std::string name);
+   virtual MapNode* containsValue(std::string name);
 	virtual int pathTime(std::string name1, std::string name2);
    virtual void readMapFromFile(std::string fileName);
 };

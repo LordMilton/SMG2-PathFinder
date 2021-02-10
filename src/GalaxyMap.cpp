@@ -49,7 +49,7 @@ std::string GalaxyMap::getName()
    return name;
 }
 
-void* GalaxyMap::containsNode(std::string name)
+void* GalaxyMap::containsValue(std::string name)
 {
    std::queue<MapNode*> que;
    que.push(head);
@@ -86,6 +86,7 @@ void* GalaxyMap::containsNode(std::string name)
 
 int GalaxyMap::pathTime(std::string name1, std::string name2)
 {
+   
    
    return -1;
 }

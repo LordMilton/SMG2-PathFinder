@@ -38,18 +38,18 @@ TEST_F(GalaxyMap_Test, ReadMapFromFile_NoFile)
 {
    map.readMapFromFile("notAFile");
    try{
-      EXPECT_TRUE(map.containsNode("test") == NULL);
+      EXPECT_TRUE(map.containsValue("test") == NULL);
    }catch(...){
       GTEST_FAIL();
    }
 }
 
 //Tests that all nodes are being created and can be found
-TEST_F(GalaxyMap_Test, ContainsNode)
+TEST_F(GalaxyMap_Test, ContainsValue)
 {
-   EXPECT_TRUE(map.containsNode("Test Begin") != NULL);
-   EXPECT_TRUE(map.containsNode("Test End") != NULL);
-   EXPECT_TRUE(map.containsNode("Test Middle") != NULL);
+   EXPECT_TRUE(map.containsValue("Test Begin") != NULL);
+   EXPECT_TRUE(map.containsValue("Test End") != NULL);
+   EXPECT_TRUE(map.containsValue("Test Middle") != NULL);
 }
 
 //Tests pathTime on empty Map

@@ -27,7 +27,7 @@ class GalaxyMap: public Map
    ~GalaxyMap();
 
    std::string getName();
-   void* containsNode(std::string name);
+   void* containsValue(std::string name);
 	int pathTime(std::string name1, std::string name2);
    void readMapFromFile(std::string fileName);
 };
