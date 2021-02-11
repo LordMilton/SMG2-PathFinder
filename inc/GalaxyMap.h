@@ -22,6 +22,9 @@ class GalaxyMap: public Map
    // Searches a list of MapNodes for one whose value has the matching name
    GalaxyMap::MapNode* fetchNodeFromArray(MapNode* nodes[], int arrLen, std::string name);
    
+   //Similar to containsValue(), but returns the MapNode rather than the MapNode's value
+   GalaxyMap::MapNode* containsNode(std::string name);
+   
    public:
    GalaxyMap(int moveTime);
    ~GalaxyMap();

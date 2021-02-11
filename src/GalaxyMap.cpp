@@ -44,17 +44,17 @@ GalaxyMap::~GalaxyMap()
    }
 }
 
-std::string GalaxyMap::getName()
+GalaxyMap::MapNode* GalaxyMap::containsNode(std::string name)
 {
-   return name;
-}
-
-void* GalaxyMap::containsValue(std::string name)
-{
+   if(head == NULL)
+   {
+      return NULL;
+   }
+   
    std::queue<MapNode*> que;
    que.push(head);
    bool found = false;
-   Galaxy* toReturn = NULL;
+   MapNode* toReturn = NULL;
    while(!found && !que.empty())
    {
       MapNode* cur = que.front();
@@ -62,7 +62,7 @@ void* GalaxyMap::containsValue(std::string name)
       {
          if(((Galaxy*)(cur->getVal()))->getName() == name)
          {
-            toReturn = (Galaxy*)(cur->getVal());
+            toReturn = cur;
             found = true;
          }
          else
@@ -84,11 +84,65 @@ void* GalaxyMap::containsValue(std::string name)
    return toReturn;
 }
 
+std::string GalaxyMap::getName()
+{
+   return name;
+}
+
+void* GalaxyMap::containsValue(std::string name)
+{
+   MapNode* node = containsNode(name);
+   if(node == NULL)
+      return NULL;
+   
+   return node->getVal();
+}
+
 int GalaxyMap::pathTime(std::string name1, std::string name2)
 {
+   MapNode* start = containsNode(name1);
+   if(start == NULL)
+   {
+      return -1;
+   }
    
+   start->reached = 0;
+   std::queue<MapNode*> que;
+   que.push(start);
+   bool found = false;
+   MapNode* foundNode = NULL;
+   while(!found && !que.empty())
+   {
+      MapNode* cur = que.front();
+      if(((Galaxy*)(cur->getVal()))->getName() == name2)
+      {
+         foundNode = cur;
+         found = true;
+      }
+      else
+      {
+         int numCons = 0;
+         MapNode** cons = cur->getCons(numCons);
+         for(int i = 0; i < numCons; i++)
+         {
+            if(cons[i]->reached < 0 || cons[i]->reached > (cur->reached + moveTime))
+            {
+               cons[i]->reached = cur->reached + moveTime;
+               que.push(cons[i]);
+            }
+         }
+      }
+      que.pop();
+   }
+   int toReturn = -1;
+   if(foundNode != NULL)
+   {
+      toReturn = foundNode->reached;
+   }
    
-   return -1;
+   start->resetReached();
+   
+   return toReturn;
 }
 
 //Returns true as long as file's good bit is true
