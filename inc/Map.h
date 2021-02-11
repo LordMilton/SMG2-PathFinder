@@ -46,7 +46,7 @@ class Map
       // to affect them all
       void resetReached()
       {
-         if(reached > 0)
+         if(reached >= 0)
          {
             reached = -1;
             for(int i = 0; i < numCons; i++)
@@ -137,6 +137,10 @@ class Map
    MapNode* head;
    std::string name;
 	int moveTime;
+   
+   //Checks if a node exists in this map with a value with the given identifier
+   //Returns the associated MapNode or NULL if one does not exist
+   virtual MapNode* containsNode(std::string name)=0;
 	
 	public:
    inline Map();
