@@ -8,11 +8,10 @@
 class World
 {  private:
    std::string name;
-   int numGalaxies;
    GalaxyMap* map;
    
    public:
-   World(std::string name, int numGalaxies, GalaxyMap* galaxyMap);
+   World(std::string name, GalaxyMap* galaxyMap);
    
    std::string getName();
    
