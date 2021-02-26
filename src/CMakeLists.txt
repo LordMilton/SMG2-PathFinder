@@ -5,4 +5,5 @@ target_sources(PathFinder
         Galaxy.cpp
         GalaxyMap.cpp
         Star.cpp
+        World.cpp
 )
