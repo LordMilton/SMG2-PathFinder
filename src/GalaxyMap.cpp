@@ -145,8 +145,7 @@ int GalaxyMap::pathTime(std::string name1, std::string name2)
    return toReturn;
 }
 
-//Returns true as long as file's good bit is true
-bool safeReadLine(std::ifstream* file, char line[MAX_LINE_LENGTH])
+bool GalaxyMap::safeReadLine(std::ifstream* file, char line[MAX_LINE_LENGTH])
 {
    if(file->is_open() && file->good())
    {

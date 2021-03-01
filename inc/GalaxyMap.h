@@ -25,6 +25,9 @@ class GalaxyMap: public Map
    //Similar to containsValue(), but returns the MapNode rather than the MapNode's value
    GalaxyMap::MapNode* containsNode(std::string name);
    
+   //Returns true as long as file's good bit is true
+   bool safeReadLine(std::ifstream* file, char line[]);
+   
    public:
    GalaxyMap(int moveTime);
    ~GalaxyMap();
