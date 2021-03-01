@@ -6,6 +6,7 @@ World::World(std::string name, GalaxyMap* galaxyMap, bool available)
 {
    map = galaxyMap;
    this->name = name;
+   this->available = available;
 }
 
 World::~World()
@@ -33,9 +34,10 @@ GalaxyMap* World::getMap()
 
 bool World::isAvailable()
 {
-   return true;
+   return available;
 }
 
 void World::makeAvailable()
 {
+   available = true;
 }
