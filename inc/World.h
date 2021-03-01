@@ -8,10 +8,11 @@
 class World
 {  private:
    std::string name;
+   bool available;
    GalaxyMap* map;
    
    public:
-   World(std::string name, GalaxyMap* galaxyMap);
+   World(std::string name, GalaxyMap* galaxyMap, bool available=false);
    
    ~World();
    
@@ -24,7 +25,12 @@ class World
    //Returns the GalaxyMap* from this World
    GalaxyMap* getMap();
    
-   //
+   //Returns whether this World is available
+   bool isAvailable();
+   
+   //Used to indicate that at least one Galaxy in this World is available
+   //    (and therefore that this World is available)
+   void makeAvailable();
 };
 
 #endif
