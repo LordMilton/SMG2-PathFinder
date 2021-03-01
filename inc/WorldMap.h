@@ -9,13 +9,26 @@
 
 class WorldMap: public Map
 {	private:
+
+   //Similar to containsValue(), but returns the MapNode rather than the MapNode's value
+   WorldMap::MapNode* containsNode(std::string name);
+   
+   //Helper method for readMapFromFile
+   // Searches a list of MapNodes for one whose value has the matching name
+   GalaxyMap::MapNode* fetchNodeFromArray(MapNode* nodes[], int arrLen, std::string name);
+   
+   //Returns true as long as file's good bit is true
+   bool safeReadLine(std::ifstream* file, char line[]);
    
    public:
-   WorldMap();
+   WorldMap(int moveTime);
    
-   virtual MapNode* containsValue(std::string name);
-	virtual int pathTime(std::string name1, std::string name2);
-   virtual void readMapFromFile(std::string fileName);
+   ~WorldMap();
+   
+   std::string getName(); 
+   void* containsValue(std::string name);
+	int pathTime(std::string name1, std::string name2);
+   void readMapFromFile(std::string fileName);
 };
 
 

@@ -1,0 +1,245 @@
+#include <string>
+#include <cstring>
+#include <queue>
+#include <iostream>
+#include <fstream>
+#include "WorldMap.h"
+#include "World.h"
+
+#define MAX_LINE_LENGTH 200
+#define AVAILABLE_MARKER "-A-"
+#define GALAXIES_SEPARATOR "--- Worlds ---"
+//Character placed before stars to differentiate between stars and galaxies
+#define CONNECTIONS_SEPARATOR "--- Connections ---"
+//Character that goes inbetween the two galaxy names
+#define CONNECTION_DELIMITER "-"
+#define MAX_NODES 100
+#define MAX_CONNECTIONS 2
+
+#define GALAXY_MOVE_SPEED 500
+
+WorldMap::WorldMap(int moveTime):Map()
+{
+   name = "";
+   this->moveTime = moveTime;
+   head = NULL;
+}
+
+WorldMap::~WorldMap()
+{
+   std::queue<MapNode*> toDestroy;
+   if(head != NULL)
+      toDestroy.push(head);
+   while(!toDestroy.empty())
+   {
+      MapNode* next = toDestroy.front();
+      int futureNodesSize = -1;
+      MapNode** futureNodes = next->getCons(futureNodesSize);
+      for(int i = 0; i < futureNodesSize; i++)
+      {
+         toDestroy.push(futureNodes[i]);
+      }
+      futureNodes = NULL;
+      toDestroy.pop();
+      delete(next);
+      next = NULL;
+   }
+}
+
+WorldMap::MapNode* WorldMap::containsNode(std::string name)
+{
+   if(head == NULL)
+   {
+      return NULL;
+   }
+   
+   std::queue<MapNode*> que;
+   que.push(head);
+   bool found = false;
+   MapNode* toReturn = NULL;
+   while(!found && !que.empty())
+   {
+      MapNode* cur = que.front();
+      if(cur->reached < 0)
+      {
+         if(((World*)(cur->getVal()))->getName() == name)
+         {
+            toReturn = cur;
+            found = true;
+         }
+         else
+         {
+            int numCons = 0;
+            MapNode** cons = cur->getCons(numCons);
+            for(int i = 0; i < numCons; i++)
+            {
+               que.push(cons[i]);
+            }
+         }
+         cur->reached = 1; //Mark node as searched
+      }
+      
+      que.pop();
+   }
+   head->resetReached();
+   
+   return toReturn;
+}
+
+std::string WorldMap::getName()
+{
+   return name;
+}
+
+void* WorldMap::containsValue(std::string name)
+{
+   MapNode* node = containsNode(name);
+   if(node == NULL)
+      return NULL;
+   
+   return node->getVal();
+}
+
+int WorldMap::pathTime(std::string name1, std::string name2)
+{
+   MapNode* start = containsNode(name1);
+   if(start == NULL)
+   {
+      return -1;
+   }
+   
+   start->reached = 0;
+   std::queue<MapNode*> que;
+   que.push(start);
+   bool found = false;
+   MapNode* foundNode = NULL;
+   while(!found && !que.empty())
+   {
+      MapNode* cur = que.front();
+      if(((World*)(cur->getVal()))->getName() == name2)
+      {
+         foundNode = cur;
+         found = true;
+      }
+      else
+      {
+         int numCons = 0;
+         MapNode** cons = cur->getCons(numCons);
+         for(int i = 0; i < numCons; i++)
+         {
+            if(cons[i]->reached < 0 || cons[i]->reached > (cur->reached + moveTime))
+            {
+               cons[i]->reached = cur->reached + moveTime;
+               que.push(cons[i]);
+            }
+         }
+      }
+      que.pop();
+   }
+   int toReturn = -1;
+   if(foundNode != NULL)
+   {
+      toReturn = foundNode->reached;
+   }
+   
+   start->resetReached();
+   
+   return toReturn;
+}
+
+bool WorldMap::safeReadLine(std::ifstream* file, char line[MAX_LINE_LENGTH])
+{
+   if(file->is_open() && file->good())
+   {
+      file->getline(line,MAX_LINE_LENGTH);
+   }
+   return file->good();
+}
+
+WorldMap::MapNode* WorldMap::fetchNodeFromArray(MapNode* nodes[], int arrLen, std::string name)
+{
+   for(int i = 0; i < arrLen; i++)
+   {
+      MapNode* cur = nodes[i];
+      if(((World*)(cur->getVal()))->getName() == name)
+      {
+         return cur;
+      }
+   }
+   return NULL;
+}
+
+void WorldMap::readMapFromFile(std::string filename)
+{
+   std::ifstream specs;
+   specs.open(filename);
+   char nextLine[MAX_LINE_LENGTH];
+   bool lastReadGood = true;
+   if(specs.is_open())
+   {
+      //--- Galaxies ---
+      MapNode* nodes[MAX_NODES];
+      int numWorlds = 0;
+      lastReadGood = safeReadLine(&specs, nextLine); //Burn separator
+      lastReadGood = safeReadLine(&specs, nextLine);
+      bool firstWorld = true;
+      while(lastReadGood && (strcmp(nextLine, CONNECTIONS_SEPARATOR)) != 0)
+      {
+         bool available = false;
+         int cutOff = 0; //How many characters of the line to cut off (takes care of AVAILABLE_MARKER if necessary)
+         if(strstr(nextLine, AVAILABLE_MARKER) != NULL)
+         {
+            available = true;
+            cutOff = strlen(AVAILABLE_MARKER);
+         }
+         nextLine[strlen(nextLine) - cutOff] = '\0'; // Cuts off the AVAILABLE_MARKER
+         
+         GalaxyMap* map = new GalaxyMap(GALAXY_MOVE_SPEED);
+         map->readMapFromFile(nextLine);
+         
+         World* gal = new World(nextLine, map, available);
+         
+         MapNode* node = new MapNode(gal, MAX_CONNECTIONS);
+         if(firstWorld)
+         {
+            head = node;
+            firstWorld = false;
+         }
+         nodes[numWorlds++] = node;
+         
+         lastReadGood = safeReadLine(&specs, nextLine);
+      }
+      
+      //--- Connections ---
+      // Separator already got burned in the last loop
+      lastReadGood = safeReadLine(&specs, nextLine);
+      while(lastReadGood) //Either until it fails or we reach EOF
+      {
+         std::string firstWorldName = strtok(nextLine, CONNECTION_DELIMITER);
+         std::string secondWorldName = strtok(NULL, CONNECTION_DELIMITER);
+         MapNode* firstNode = fetchNodeFromArray(nodes, numWorlds, firstWorldName);
+         MapNode* secondNode = fetchNodeFromArray(nodes, numWorlds, secondWorldName);
+         
+         bool badName = false;
+         if(firstNode == NULL)
+         {
+            std::cout << "\"" << firstWorldName << "\" does not name a world in file \"" << filename << "\"\n";
+            badName = true;
+         }
+         if(secondNode == NULL)
+         {
+            std::cout << "\"" << secondWorldName << "\" does not name a world in file \"" << filename << "\"\n";
+            badName = true;
+         }
+         
+         if(!badName)
+         {
+            firstNode->addCon(secondNode);
+         }
+         
+         lastReadGood = safeReadLine(&specs, nextLine);
+      }
+      
+      specs.close();
+   }
+}
