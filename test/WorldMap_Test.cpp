@@ -11,7 +11,7 @@ class WorldMap_Test : public testing::Test
 
    virtual void SetUp()
    {
-      map.readMapFromFile("../data/Test World");
+      map.readMapFromFile("../data/Test Worlds");
    }
    
    virtual void TearDown()
