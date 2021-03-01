@@ -6,12 +6,14 @@ class World_Test : public testing::Test
 {  protected:
    GalaxyMap* map = NULL;
    World* world1 = NULL;
+   World* world2 = NULL;
 
    virtual void SetUp()
    {
       map = new GalaxyMap(500);
-      world1 = new World("Test World", map);
+      world1 = new World("Test World", map, true);
       world1->getMap()->readMapFromFile("../data/Test World");
+      world2 = new World("Test World", map);
    }
    
    virtual void TearDown()
@@ -56,4 +58,20 @@ TEST_F(World_Test, ContainsGalaxy_Exists)
 TEST_F(World_Test, ContainsGalaxy_NotExists)
 {
    EXPECT_TRUE(world1->containsGalaxy("Test") == NULL);
+}
+
+//Tests that availability is being set by constructor
+TEST_F(World_Test, IsAvailable_Constructor)
+{
+   EXPECT_TRUE(world1->isAvailable());
+   EXPECT_FALSE(world2->isAvailable());
+}
+
+//Tests that MakeAvailable is changing availability appropriately
+TEST_F(World_Test, MakeAvailable)
+{
+   world1->makeAvailable();
+   world2->makeAvailable();
+   EXPECT_TRUE(world1->isAvailable());
+   EXPECT_TRUE(world2->isAvailable());
 }

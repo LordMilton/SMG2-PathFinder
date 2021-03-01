@@ -2,7 +2,7 @@
 #include "GalaxyMap.h"
 #include "Galaxy.h"
 
-World::World(std::string name, GalaxyMap* galaxyMap)
+World::World(std::string name, GalaxyMap* galaxyMap, bool available)
 {
    map = galaxyMap;
    this->name = name;
@@ -29,4 +29,13 @@ Galaxy* World::containsGalaxy(std::string name)
 GalaxyMap* World::getMap()
 {
    return map;
+}
+
+bool World::isAvailable()
+{
+   return true;
+}
+
+void World::makeAvailable()
+{
 }
