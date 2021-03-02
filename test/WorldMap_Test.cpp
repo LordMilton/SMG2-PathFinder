@@ -25,14 +25,12 @@ class WorldMap_Test : public testing::Test
 //Tests that missing file is handled properly
 TEST_F(WorldMap_Test, ReadMapFromFile_NoFile)
 {
-   std::cout << "start test" << std::endl;
    map.readMapFromFile("notAFile");
    try{
       EXPECT_TRUE(map.containsValue("test") == NULL);
    }catch(...){
       GTEST_FAIL();
    }
-   std::cout << "end test" << std::endl;
 }
 
 //Tests that all nodes are being created and can be found
