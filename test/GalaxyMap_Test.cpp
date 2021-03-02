@@ -44,6 +44,20 @@ TEST_F(GalaxyMap_Test, ReadMapFromFile_NoFile)
    }
 }
 
+//Tests that stars are being read from file
+TEST_F(GalaxyMap_Test, ReadMapFromFile_Stars)
+{
+   Galaxy* begin = ((Galaxy*)map.containsValue("Test Begin"));
+   Galaxy* end = ((Galaxy*)map.containsValue("Test End"));
+   
+   EXPECT_TRUE(begin->getStar("Star 1") != NULL);
+   EXPECT_TRUE(begin->getStar("Secret Star") != NULL);
+   EXPECT_TRUE(begin->getStar("Comet Star") != NULL);
+   EXPECT_TRUE(end->getStar("Star 1") != NULL);
+   EXPECT_TRUE(end->getStar("Comet Star") != NULL);
+   EXPECT_FALSE(end->getStar(3) != NULL);
+}
+
 //Tests that all nodes are being created and can be found
 TEST_F(GalaxyMap_Test, ContainsValue)
 {
