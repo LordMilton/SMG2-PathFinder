@@ -27,6 +27,10 @@ class GalaxyMap: public Map
    
    //Returns true as long as file's good bit is true
    bool safeReadLine(std::ifstream* file, char line[]);
+   //Reads the Galaxies section of the file
+   void readGalsFromFile(std::string filename, std::ifstream* file, char line[], MapNode* nodes[], int* numGals);
+   //Reads the Connections section of the file
+   void readConsFromFile(std::string filename, std::ifstream* file, char line[], MapNode* nodes[], int numGals);
    
    public:
    GalaxyMap(int moveTime);
