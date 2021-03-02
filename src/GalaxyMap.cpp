@@ -9,7 +9,7 @@
 #define AVAILABLE_MARKER "-A-"
 #define GALAXIES_SEPARATOR "--- Galaxies ---"
 //Character placed before stars to differentiate between stars and galaxies
-#define STAR_INDICATOR '*'
+#define STAR_INDICATOR "*"
 #define CONNECTIONS_SEPARATOR "--- Connections ---"
 //Character that goes inbetween the two galaxy names
 #define CONNECTION_DELIMITER "-"
@@ -191,68 +191,83 @@ void GalaxyMap::readMapFromFile(std::string filename)
       MapNode* nodes[MAX_NODES];
       int numGalaxies = 0;
       lastReadGood = safeReadLine(&specs, nextLine); //Burn separator
-      lastReadGood = safeReadLine(&specs, nextLine);
-      bool firstGal = true;
-      while(lastReadGood && (strcmp(nextLine, CONNECTIONS_SEPARATOR)) != 0)
-      {
-         bool available = false;
-         int cutOff = 0; //How many characters of the line to cut off (takes care of AVAILABLE_MARKER if necessary)
-         if(strstr(nextLine, AVAILABLE_MARKER) != NULL)
-         {
-            available = true;
-            cutOff = strlen(AVAILABLE_MARKER);
-         }
-         nextLine[strlen(nextLine) - cutOff] = '\0'; // Cuts off the AVAILABLE_MARKER
-         Galaxy* gal = new Galaxy(nextLine, available);
-         
-         lastReadGood = safeReadLine(&specs, nextLine);
-         while(lastReadGood && nextLine[0] == STAR_INDICATOR)
-         {
-            Star* star = new Star(strtok(nextLine, STAR_INDICATOR + ""));
-            gal->addStar(star);
-            
-            lastReadGood = safeReadLine(&specs, nextLine);
-         }
-         
-         MapNode* node = new MapNode(gal, MAX_CONNECTIONS);
-         if(firstGal)
-         {
-            head = node;
-            firstGal = false;
-         }
-         nodes[numGalaxies++] = node;
-      }
+      
+      readGalsFromFile(filename, &specs, nextLine, nodes, &numGalaxies);
       
       //--- Connections ---
       // Separator already got burned in the last loop
-      lastReadGood = safeReadLine(&specs, nextLine);
-      while(lastReadGood) //Either until it fails or we reach EOF
-      {
-         std::string firstGalName = strtok(nextLine, CONNECTION_DELIMITER);
-         std::string secondGalName = strtok(NULL, CONNECTION_DELIMITER);
-         MapNode* firstNode = fetchNodeFromArray(nodes, numGalaxies, firstGalName);
-         MapNode* secondNode = fetchNodeFromArray(nodes, numGalaxies, secondGalName);
-         
-         bool badName = false;
-         if(firstNode == NULL)
-         {
-            std::cout << "\"" << firstGalName << "\" does not name a galaxy in file \"" << filename << "\"\n";
-            badName = true;
-         }
-         if(secondNode == NULL)
-         {
-            std::cout << "\"" << secondGalName << "\" does not name a galaxy in file \"" << filename << "\"\n";
-            badName = true;
-         }
-         
-         if(!badName)
-         {
-            firstNode->addCon(secondNode);
-         }
-         
-         lastReadGood = safeReadLine(&specs, nextLine);
-      }
+      readConsFromFile(filename, &specs, nextLine, nodes, numGalaxies);
       
       specs.close();
+   }
+}
+
+void GalaxyMap::readGalsFromFile(std::string filename, std::ifstream* file, char nextLine[], MapNode* nodes[], int* numGals)
+{
+   bool lastReadGood = safeReadLine(file, nextLine);
+   bool firstGal = true;
+   while(lastReadGood && (strcmp(nextLine, CONNECTIONS_SEPARATOR)) != 0)
+   {
+      bool available = false;
+      int cutOff = 0; //How many characters of the nextLine to cut off (takes care of AVAILABLE_MARKER if necessary)
+      if(strstr(nextLine, AVAILABLE_MARKER) != NULL)
+      {
+         available = true;
+         cutOff = strlen(AVAILABLE_MARKER);
+      }
+      nextLine[strlen(nextLine) - cutOff] = '\0'; // Cuts off the AVAILABLE_MARKER
+      
+      GalaxyMap* map = new GalaxyMap(500);
+      map->readMapFromFile(nextLine);
+      
+      Galaxy* gal = new Galaxy(nextLine, available);
+      
+      lastReadGood = safeReadLine(file, nextLine);
+      while(lastReadGood && strstr(nextLine, STAR_INDICATOR) != NULL) //Stars should not have the STAR_INDICATOR string in their name because of this
+      {
+         Star* star = new Star(strtok(nextLine, STAR_INDICATOR));
+         gal->addStar(star);
+         
+         lastReadGood = safeReadLine(file, nextLine);
+      }
+      
+      MapNode* node = new MapNode(gal, MAX_CONNECTIONS);
+      if(firstGal)
+      {
+         head = node;
+         firstGal = false;
+      }
+      nodes[(*numGals)++] = node;      
+   }
+}
+
+void GalaxyMap::readConsFromFile(std::string filename, std::ifstream* file, char nextLine[], MapNode* nodes[], int numGals)
+{
+   bool lastReadGood = safeReadLine(file, nextLine);
+   while(lastReadGood) //Either until it fails or we reach EOF
+   {
+      std::string firstGalName = strtok(nextLine, CONNECTION_DELIMITER);
+      std::string secondGalName = strtok(NULL, CONNECTION_DELIMITER);
+      MapNode* firstNode = fetchNodeFromArray(nodes, numGals, firstGalName);
+      MapNode* secondNode = fetchNodeFromArray(nodes, numGals, secondGalName);
+      
+      bool badName = false;
+      if(firstNode == NULL)
+      {
+         std::cout << "\"" << firstGalName << "\" does not name a gal in file \"" << filename << "\"\n";
+         badName = true;
+      }
+      if(secondNode == NULL)
+      {
+         std::cout << "\"" << secondGalName << "\" does not name a gal in file \"" << filename << "\"\n";
+         badName = true;
+      }
+      
+      if(!badName)
+      {
+         firstNode->addCon(secondNode);
+      }
+      
+      lastReadGood = safeReadLine(file, nextLine);
    }
 }
