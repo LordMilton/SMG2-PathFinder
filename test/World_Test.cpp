@@ -18,7 +18,6 @@ class World_Test : public testing::Test
    
    virtual void TearDown()
    {
-      delete map;
       delete world1;
    }
    
