@@ -12,6 +12,8 @@ class Star
 	
 	public:
 	Star(std::string name);
+   
+   ~Star();
 	
 	void setTime(int time);
 	void setTimeWithMedal(int time);

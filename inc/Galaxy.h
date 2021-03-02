@@ -19,6 +19,8 @@ class Galaxy
 	
 	public:
 	Galaxy(std::string name, bool available = false);
+   
+   ~Galaxy();
 	
    std::string getName();
    
