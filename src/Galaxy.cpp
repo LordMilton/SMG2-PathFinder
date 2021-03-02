@@ -11,6 +11,14 @@ Galaxy::Galaxy(string name, bool available)
 	this->available = available;
 }
 
+Galaxy::~Galaxy()
+{
+   for(int i = 0; i < numStars; i++)
+   {
+      delete stars[i];
+   }
+}
+
 string Galaxy::getName()
 {
    return name;

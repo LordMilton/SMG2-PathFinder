@@ -10,6 +10,10 @@ Star::Star(string name)
 	timeWithMedal = 3600000;
 }
 
+Star::~Star()
+{
+}
+
 void Star::setTime(int time)
 {
 	this->time = time;

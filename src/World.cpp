@@ -11,6 +11,7 @@ World::World(std::string name, GalaxyMap* galaxyMap, bool available)
 
 World::~World()
 {
+   delete map;
 }
 
 std::string World::getName()

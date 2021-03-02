@@ -39,6 +39,8 @@ GalaxyMap::~GalaxyMap()
       }
       futureNodes = NULL;
       toDestroy.pop();
+      Galaxy* val = (Galaxy*)(next->getVal());
+      delete(val);
       delete(next);
       next = NULL;
    }

@@ -41,6 +41,8 @@ WorldMap::~WorldMap()
       }
       futureNodes = NULL;
       toDestroy.pop();
+      World* val = (World*)(next->getVal());
+      delete(val);
       delete(next);
       next = NULL;
    }
