@@ -15,10 +15,14 @@ class WorldMap: public Map
    
    //Helper method for readMapFromFile
    // Searches a list of MapNodes for one whose value has the matching name
-   GalaxyMap::MapNode* fetchNodeFromArray(MapNode* nodes[], int arrLen, std::string name);
+   WorldMap::MapNode* fetchNodeFromArray(MapNode* nodes[], int arrLen, std::string name);
    
    //Returns true as long as file's good bit is true
    bool safeReadLine(std::ifstream* file, char line[]);
+   //Reads the World section of the file
+   void readWorldsFromFile(std::string filename, std::ifstream* file, char line[], MapNode* nodes[], int* numWorlds);
+   //Reads the Connections section of the file
+   void readConsFromFile(std::string filename, std::ifstream* file, char line[], MapNode* nodes[], int numWorlds);
    
    public:
    WorldMap(int moveTime);

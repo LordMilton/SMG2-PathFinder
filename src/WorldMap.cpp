@@ -177,69 +177,80 @@ void WorldMap::readMapFromFile(std::string filename)
    bool lastReadGood = true;
    if(specs.is_open())
    {
-      //--- Galaxies ---
+      //--- Worlds ---
       MapNode* nodes[MAX_NODES];
       int numWorlds = 0;
       lastReadGood = safeReadLine(&specs, nextLine); //Burn separator
-      lastReadGood = safeReadLine(&specs, nextLine);
-      bool firstWorld = true;
-      while(lastReadGood && (strcmp(nextLine, CONNECTIONS_SEPARATOR)) != 0)
-      {
-         bool available = false;
-         int cutOff = 0; //How many characters of the line to cut off (takes care of AVAILABLE_MARKER if necessary)
-         if(strstr(nextLine, AVAILABLE_MARKER) != NULL)
-         {
-            available = true;
-            cutOff = strlen(AVAILABLE_MARKER);
-         }
-         nextLine[strlen(nextLine) - cutOff] = '\0'; // Cuts off the AVAILABLE_MARKER
-         
-         GalaxyMap* map = new GalaxyMap(GALAXY_MOVE_SPEED);
-         map->readMapFromFile(nextLine);
-         
-         World* gal = new World(nextLine, map, available);
-         
-         MapNode* node = new MapNode(gal, MAX_CONNECTIONS);
-         if(firstWorld)
-         {
-            head = node;
-            firstWorld = false;
-         }
-         nodes[numWorlds++] = node;
-         
-         lastReadGood = safeReadLine(&specs, nextLine);
-      }
+      
+      readWorldsFromFile(filename, &specs, nextLine, nodes, &numWorlds);
       
       //--- Connections ---
       // Separator already got burned in the last loop
-      lastReadGood = safeReadLine(&specs, nextLine);
-      while(lastReadGood) //Either until it fails or we reach EOF
-      {
-         std::string firstWorldName = strtok(nextLine, CONNECTION_DELIMITER);
-         std::string secondWorldName = strtok(NULL, CONNECTION_DELIMITER);
-         MapNode* firstNode = fetchNodeFromArray(nodes, numWorlds, firstWorldName);
-         MapNode* secondNode = fetchNodeFromArray(nodes, numWorlds, secondWorldName);
-         
-         bool badName = false;
-         if(firstNode == NULL)
-         {
-            std::cout << "\"" << firstWorldName << "\" does not name a world in file \"" << filename << "\"\n";
-            badName = true;
-         }
-         if(secondNode == NULL)
-         {
-            std::cout << "\"" << secondWorldName << "\" does not name a world in file \"" << filename << "\"\n";
-            badName = true;
-         }
-         
-         if(!badName)
-         {
-            firstNode->addCon(secondNode);
-         }
-         
-         lastReadGood = safeReadLine(&specs, nextLine);
-      }
+      readConsFromFile(filename, &specs, nextLine, nodes, numWorlds);
       
       specs.close();
+   }
+}
+
+void WorldMap::readWorldsFromFile(std::string filename, std::ifstream* file, char nextLine[], MapNode* nodes[], int* numWorlds)
+{
+   bool lastReadGood = safeReadLine(file, nextLine);
+   bool firstWorld = true;
+   while(lastReadGood && (strcmp(nextLine, CONNECTIONS_SEPARATOR)) != 0)
+   {
+      bool available = false;
+      int cutOff = 0; //How many characters of the nextLine to cut off (takes care of AVAILABLE_MARKER if necessary)
+      if(strstr(nextLine, AVAILABLE_MARKER) != NULL)
+      {
+         available = true;
+         cutOff = strlen(AVAILABLE_MARKER);
+      }
+      nextLine[strlen(nextLine) - cutOff] = '\0'; // Cuts off the AVAILABLE_MARKER
+      
+      GalaxyMap* map = new GalaxyMap(GALAXY_MOVE_SPEED);
+      map->readMapFromFile(nextLine);
+      
+      World* world = new World(nextLine, map, available);
+      
+      MapNode* node = new MapNode(world, MAX_CONNECTIONS);
+      if(firstWorld)
+      {
+         head = node;
+         firstWorld = false;
+      }
+      nodes[(*numWorlds)++] = node;
+      
+      lastReadGood = safeReadLine(file, nextLine);
+   }
+}
+
+void WorldMap::readConsFromFile(std::string filename, std::ifstream* file, char nextLine[], MapNode* nodes[], int numWorlds)
+{
+   bool lastReadGood = safeReadLine(file, nextLine);
+   while(lastReadGood) //Either until it fails or we reach EOF
+   {
+      std::string firstWorldName = strtok(nextLine, CONNECTION_DELIMITER);
+      std::string secondWorldName = strtok(NULL, CONNECTION_DELIMITER);
+      MapNode* firstNode = fetchNodeFromArray(nodes, numWorlds, firstWorldName);
+      MapNode* secondNode = fetchNodeFromArray(nodes, numWorlds, secondWorldName);
+      
+      bool badName = false;
+      if(firstNode == NULL)
+      {
+         std::cout << "\"" << firstWorldName << "\" does not name a world in file \"" << filename << "\"\n";
+         badName = true;
+      }
+      if(secondNode == NULL)
+      {
+         std::cout << "\"" << secondWorldName << "\" does not name a world in file \"" << filename << "\"\n";
+         badName = true;
+      }
+      
+      if(!badName)
+      {
+         firstNode->addCon(secondNode);
+      }
+      
+      lastReadGood = safeReadLine(file, nextLine);
    }
 }
