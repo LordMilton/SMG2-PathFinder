@@ -136,6 +136,9 @@ class Map
    
    MapNode* head;
    std::string name;
+   //Number of Nodes in this Map
+   //Mainly for toArray()
+   int numNodes;
 	int moveTime;
    
    //Checks if a node exists in this map with a value with the given identifier
@@ -148,6 +151,9 @@ class Map
    
    //Returns this Map's name
    virtual std::string getName()=0;
+   
+   //Returns the Map's contents in an array, returns the size by way of the first parameter
+   virtual void** toArray(int* arrSize)=0;
    
    //Checks if a node exists in this map with a value with the given identifier
    //Returns the associated MapNode's value or NULL if one (MapNode or value) does not exist

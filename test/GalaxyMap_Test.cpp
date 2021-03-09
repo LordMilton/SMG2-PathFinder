@@ -72,7 +72,7 @@ TEST_F(GalaxyMap_Test, PathTime_Empty)
    EXPECT_EQ(emptyMap.pathTime("test1", "test2"), -1);
 }
 
-//TODO Tests pathTime with one or both nodes inaccessible
+//Tests pathTime with one or both nodes inaccessible
 TEST_F(GalaxyMap_Test, PathTime_Inaccessible)
 {
    EXPECT_EQ(map.pathTime("none", "Test Begin"), -1);
@@ -80,9 +80,41 @@ TEST_F(GalaxyMap_Test, PathTime_Inaccessible)
    EXPECT_EQ(map.pathTime("none1", "none2"), -1);
 }
 
-//TODO Tests pathTime with valid input
+//Tests pathTime with valid input
 TEST_F(GalaxyMap_Test, PathTime_Valid)
 {
    EXPECT_EQ(map.pathTime("Test Begin", "Test End"), MOVE_TIME*3);
    EXPECT_EQ(map.pathTime("Test End", "Test Begin"), MOVE_TIME*3);
+}
+
+//Helper function for toArray test(s)
+bool arrayContains(Galaxy** arr, int arrLen, std::string galName)
+{
+   for(int i = 0; i < arrLen; i++)
+   {
+      if(arr[i]->getName() == galName)
+         return true;
+   }
+   return false;
+}
+
+//Test toArray with a non-empty Map
+TEST_F(GalaxyMap_Test, ToArray_NonEmpty)
+{
+   int size = -1;
+   Galaxy** arr = (Galaxy**)(map.toArray(&size));
+   
+   EXPECT_EQ(size, 5);
+   EXPECT_TRUE(arrayContains(arr, size, "Test Begin"));
+   EXPECT_TRUE(arrayContains(arr, size, "Test Middle 2"));
+   EXPECT_TRUE(arrayContains(arr, size, "Test End"));
+}
+
+//Test toArray with an empty Map
+TEST_F(GalaxyMap_Test, ToArray_Empty)
+{
+   int size = -1;
+   Galaxy** arr = (Galaxy**)(emptyMap.toArray(&size));
+   
+   EXPECT_EQ(size, 0);
 }

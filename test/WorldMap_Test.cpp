@@ -53,7 +53,7 @@ TEST_F(WorldMap_Test, PathTime_Empty)
    EXPECT_EQ(emptyMap.pathTime("test1", "test2"), -1);
 }
 
-//TODO Tests pathTime with one or both nodes inaccessible
+//Tests pathTime with one or both nodes inaccessible
 TEST_F(WorldMap_Test, PathTime_Inaccessible)
 {
    EXPECT_EQ(map.pathTime("none", "Test World 1"), -1);
@@ -61,9 +61,41 @@ TEST_F(WorldMap_Test, PathTime_Inaccessible)
    EXPECT_EQ(map.pathTime("none1", "none2"), -1);
 }
 
-//TODO Tests pathTime with valid input
+//Tests pathTime with valid input
 TEST_F(WorldMap_Test, PathTime_Valid)
 {
    EXPECT_EQ(map.pathTime("Test World 1", "Test World 3"), MOVE_TIME*2);
    EXPECT_EQ(map.pathTime("Test World 3", "Test World 1"), MOVE_TIME*2);
+}
+
+//Helper function for toArray test(s)
+bool arrayContains(World** arr, int arrLen, std::string worldName)
+{
+   for(int i = 0; i < arrLen; i++)
+   {
+      if(arr[i]->getName() == worldName)
+         return true;
+   }
+   return false;
+}
+
+//Test toArray with a non-empty Map
+TEST_F(WorldMap_Test, ToArray_NonEmpty)
+{
+   int size = -1;
+   World** arr = (World**)(map.toArray(&size));
+   
+   EXPECT_EQ(size, 3);
+   EXPECT_TRUE(arrayContains(arr, size, "Test World 1"));
+   EXPECT_TRUE(arrayContains(arr, size, "Test World 2"));
+   EXPECT_TRUE(arrayContains(arr, size, "Test World 3"));
+}
+
+//Test toArray with an empty Map
+TEST_F(WorldMap_Test, ToArray_Empty)
+{
+   int size = -1;
+   World** arr = (World**)(emptyMap.toArray(&size));
+   
+   EXPECT_EQ(size, 0);
 }

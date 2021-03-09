@@ -21,6 +21,7 @@
 WorldMap::WorldMap(int moveTime):Map()
 {
    name = "";
+   numNodes = 0;
    this->moveTime = moveTime;
    head = NULL;
 }
@@ -91,6 +92,43 @@ WorldMap::MapNode* WorldMap::containsNode(std::string name)
 std::string WorldMap::getName()
 {
    return name;
+}
+
+void** WorldMap::toArray(int* arrSize)
+{
+   void** toReturn = new void*[numNodes];
+   *arrSize = numNodes;
+ 
+   if(numNodes <= 0)
+      return toReturn;
+ 
+   int counter = 0;
+   std::queue<MapNode*> que;
+   que.push(head);
+   while(!que.empty())
+   {
+      MapNode* cur = que.front();
+      if(cur->reached < 0)
+      {
+         //Add this one to the list
+         toReturn[counter] = cur->getVal();
+         counter++;
+         
+         //Queue up connections
+         int numCons = 0;
+         MapNode** cons = cur->getCons(numCons);
+         for(int i = 0; i < numCons; i++)
+         {
+            que.push(cons[i]);
+         }
+         cur->reached = 1; //Mark node as searched
+      }
+      
+      que.pop();
+   }
+   head->resetReached();
+   
+   return toReturn;
 }
 
 void* WorldMap::containsValue(std::string name)
@@ -185,6 +223,7 @@ void WorldMap::readMapFromFile(std::string filename)
       lastReadGood = safeReadLine(&specs, nextLine); //Burn separator
       
       readWorldsFromFile(filename, &specs, nextLine, nodes, &numWorlds);
+      this->numNodes = numWorlds;
       
       //--- Connections ---
       // Separator already got burned in the last loop

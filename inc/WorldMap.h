@@ -9,7 +9,6 @@
 
 class WorldMap: public Map
 {	private:
-
    //Similar to containsValue(), but returns the MapNode rather than the MapNode's value
    WorldMap::MapNode* containsNode(std::string name);
    
@@ -29,7 +28,8 @@ class WorldMap: public Map
    
    ~WorldMap();
    
-   std::string getName(); 
+   std::string getName();
+   void** toArray(int* arrSize);   
    void* containsValue(std::string name);
 	int pathTime(std::string name1, std::string name2);
    void readMapFromFile(std::string fileName);
