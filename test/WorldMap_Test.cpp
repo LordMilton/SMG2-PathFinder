@@ -36,9 +36,9 @@ TEST_F(WorldMap_Test, ReadMapFromFile_NoFile)
 //Tests that all nodes are being created and can be found
 TEST_F(WorldMap_Test, ContainsValue_Valid)
 {
-   EXPECT_TRUE(map.containsValue("Test World 1") != NULL);
-   EXPECT_TRUE(map.containsValue("Test World 2") != NULL);
-   EXPECT_TRUE(map.containsValue("Test World 3") != NULL);
+   EXPECT_EQ(((World*)(map.containsValue("Test World 1")))->getName(), "Test World 1");
+   EXPECT_EQ(((World*)(map.containsValue("Test World 2")))->getName(), "Test World 2");
+   EXPECT_EQ(((World*)(map.containsValue("Test World 3")))->getName(), "Test World 3");
 }
 
 //Tests that nonexistent nodes aren't falsely found

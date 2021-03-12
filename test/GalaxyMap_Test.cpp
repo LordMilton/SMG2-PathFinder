@@ -61,9 +61,9 @@ TEST_F(GalaxyMap_Test, ReadMapFromFile_Stars)
 //Tests that all nodes are being created and can be found
 TEST_F(GalaxyMap_Test, ContainsValue)
 {
-   EXPECT_TRUE(map.containsValue("Test Begin") != NULL);
-   EXPECT_TRUE(map.containsValue("Test End") != NULL);
-   EXPECT_TRUE(map.containsValue("Test Middle") != NULL);
+   EXPECT_EQ(((Galaxy*)(map.containsValue("Test Begin")))->getName(), "Test Begin");
+   EXPECT_EQ(((Galaxy*)(map.containsValue("Test End")))->getName(), "Test End");
+   EXPECT_EQ(((Galaxy*)(map.containsValue("Test Middle")))->getName(), "Test Middle");
 }
 
 //Tests pathTime on empty Map
