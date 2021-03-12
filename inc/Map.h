@@ -2,6 +2,7 @@
 #define MAP_H
 
 #include <string>
+#include <queue>
 
 class Map
 {	protected:
@@ -140,10 +141,18 @@ class Map
    //Mainly for toArray()
    int numNodes;
 	int moveTime;
+   std::queue<MapNode*>* bftQue;
    
    //Checks if a node exists in this map with a value with the given identifier
    //Returns the associated MapNode or NULL if one does not exist
    virtual MapNode* containsNode(std::string name)=0;
+   
+   //Returns the next MapNode in a BFT of the Map
+   //Providing true as the restart parameter restarts the BFT (resetting 'reached' for all MapNodes in the Map)
+   //    and will always return NULL
+   //Providing false will return the next MapNode in the BFT if an unvisited node exists, if no unvisited node
+   //    exists or the method has yet to be called with restart as true then it will return NULL
+   inline MapNode* getNextNode(bool restart = false);
 	
 	public:
    inline Map();
@@ -172,7 +181,47 @@ class Map
    virtual void readMapFromFile(std::string fileName)=0;
 };
 
-Map::Map(){} //Placeholder for linker
-Map::~Map(){} //Placeholder for linker
+Map::Map()
+{
+   bftQue = NULL;
+}
+
+Map::~Map(){}
+
+Map::MapNode* Map::getNextNode(bool restart)
+{
+   if(!restart && (bftQue == NULL || bftQue->empty() || bftQue->front() == NULL))
+      return NULL;
+   
+   if(restart)
+   {
+      if(bftQue != NULL)
+      {
+         delete bftQue;
+      }
+      
+      head->resetReached();
+      
+      bftQue = new std::queue<MapNode*>();
+      bftQue->push(head);
+      
+      return NULL;
+   }
+   
+   MapNode* cur = bftQue->front();
+   int numCons = -1;
+   MapNode** curCons = cur->getCons(numCons);
+   for(int i = 0; i < numCons; i++)
+   {
+      if(curCons[i]->reached < 0)
+      {
+         bftQue->push(curCons[i]);
+      }
+   }
+   
+   cur->reached = 1;
+   bftQue->pop();
+   return cur;
+}
 
 #endif

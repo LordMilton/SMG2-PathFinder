@@ -54,35 +54,23 @@ GalaxyMap::MapNode* GalaxyMap::containsNode(std::string name)
       return NULL;
    }
    
-   std::queue<MapNode*> que;
-   que.push(head);
+   getNextNode(true);
+   
+   MapNode* cur = getNextNode();
    bool found = false;
    MapNode* toReturn = NULL;
-   while(!found && !que.empty())
+   while(!found && cur != NULL)
    {
-      MapNode* cur = que.front();
-      if(cur->reached < 0)
+      if(((Galaxy*)(cur->getVal()))->getName() == name)
       {
-         if(((Galaxy*)(cur->getVal()))->getName() == name)
-         {
-            toReturn = cur;
-            found = true;
-         }
-         else
-         {
-            int numCons = 0;
-            MapNode** cons = cur->getCons(numCons);
-            for(int i = 0; i < numCons; i++)
-            {
-               que.push(cons[i]);
-            }
-         }
-         cur->reached = 1; //Mark node as searched
+         toReturn = cur;
+         found = true;
       }
       
-      que.pop();
+      cur = getNextNode();
    }
-   head->resetReached();
+   
+   getNextNode(true);
    
    return toReturn;
 }
@@ -100,31 +88,17 @@ void** GalaxyMap::toArray(int* arrSize)
    if(numNodes <= 0)
       return toReturn;
  
+   getNextNode(true);
+ 
    int counter = 0;
-   std::queue<MapNode*> que;
-   que.push(head);
-   while(!que.empty())
+   MapNode* cur = getNextNode();
+   while(cur != NULL)
    {
-      MapNode* cur = que.front();
-      if(cur->reached < 0)
-      {
-         //Add this one to the list
-         toReturn[counter] = cur->getVal();
-         counter++;
-         
-         //Queue up connections
-         int numCons = 0;
-         MapNode** cons = cur->getCons(numCons);
-         for(int i = 0; i < numCons; i++)
-         {
-            que.push(cons[i]);
-         }
-         cur->reached = 1; //Mark node as searched
-      }
-      
-      que.pop();
+      toReturn[counter++] = cur->getVal();
+      cur = getNextNode();
    }
-   head->resetReached();
+   
+   getNextNode(true);
    
    return toReturn;
 }
