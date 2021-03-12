@@ -18,10 +18,7 @@
 
 GalaxyMap::GalaxyMap(int moveTime):Map()
 {
-   name = "";
-   numNodes = 0;
    this->moveTime = moveTime;
-   head = NULL;
 }
 
 GalaxyMap::~GalaxyMap()

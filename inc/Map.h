@@ -184,6 +184,10 @@ class Map
 Map::Map()
 {
    bftQue = NULL;
+   head = NULL;
+   name = "";
+   numNodes = 0;
+   moveTime = 1;
 }
 
 Map::~Map(){}
