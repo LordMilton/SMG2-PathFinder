@@ -6,7 +6,7 @@
 #include "WorldMap.h"
 #include "World.h"
 
-#define MAX_LINE_LENGTH 200
+#define WORLDMAP_MAX_LINE_LENGTH 200
 #define AVAILABLE_MARKER "-A-"
 #define GALAXIES_SEPARATOR "--- Worlds ---"
 //Character placed before stars to differentiate between stars and galaxies
@@ -158,11 +158,11 @@ int WorldMap::pathTime(std::string name1, std::string name2)
    return toReturn;
 }
 
-bool WorldMap::safeReadLine(std::ifstream* file, char line[MAX_LINE_LENGTH])
+bool WorldMap::safeReadLine(std::ifstream* file, char line[WORLDMAP_MAX_LINE_LENGTH])
 {
    if(file->is_open() && file->good())
    {
-      file->getline(line,MAX_LINE_LENGTH);
+      file->getline(line,WORLDMAP_MAX_LINE_LENGTH);
    }
    return file->good();
 }
@@ -184,7 +184,7 @@ void WorldMap::readMapFromFile(std::string filename)
 {
    std::ifstream specs;
    specs.open(filename);
-   char nextLine[MAX_LINE_LENGTH];
+   char nextLine[WORLDMAP_MAX_LINE_LENGTH];
    bool lastReadGood = true;
    if(specs.is_open())
    {

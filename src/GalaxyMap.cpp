@@ -5,7 +5,7 @@
 #include <fstream>
 #include "GalaxyMap.h"
 
-#define MAX_LINE_LENGTH 200
+#define GALAXYMAP_MAX_LINE_LENGTH 200
 #define AVAILABLE_MARKER "-A-"
 #define GALAXIES_SEPARATOR "--- Galaxies ---"
 //Character placed before stars to differentiate between stars and galaxies
@@ -156,11 +156,11 @@ int GalaxyMap::pathTime(std::string name1, std::string name2)
    return toReturn;
 }
 
-bool GalaxyMap::safeReadLine(std::ifstream* file, char line[MAX_LINE_LENGTH])
+bool GalaxyMap::safeReadLine(std::ifstream* file, char line[GALAXYMAP_MAX_LINE_LENGTH])
 {
    if(file->is_open() && file->good())
    {
-      file->getline(line,MAX_LINE_LENGTH);
+      file->getline(line,GALAXYMAP_MAX_LINE_LENGTH);
    }
    return file->good();
 }
@@ -182,7 +182,7 @@ void GalaxyMap::readMapFromFile(std::string filename)
 {
    std::ifstream specs;
    specs.open(filename);
-   char nextLine[MAX_LINE_LENGTH];
+   char nextLine[GALAXYMAP_MAX_LINE_LENGTH];
    bool lastReadGood = true;
    if(specs.is_open())
    {
