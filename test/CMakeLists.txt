@@ -7,4 +7,5 @@ target_sources(PathFinder
         Galaxy_Test.cpp
         World_Test.cpp
         WorldMap_Test.cpp
+        Director_Test.cpp
 )

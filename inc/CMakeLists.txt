@@ -8,4 +8,5 @@ target_sources(PathFinder
         Star.h
         World.h
         WorldMap.h
+        Director.h
 )

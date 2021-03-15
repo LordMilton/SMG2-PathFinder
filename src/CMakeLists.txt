@@ -7,4 +7,5 @@ target_sources(PathFinder
         Star.cpp
         World.cpp
         WorldMap.cpp
+        Director.cpp
 )
