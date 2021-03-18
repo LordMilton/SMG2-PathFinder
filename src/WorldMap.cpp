@@ -219,8 +219,12 @@ void WorldMap::readWorldsFromFile(std::string filename, std::ifstream* file, cha
       }
       nextLine[strlen(nextLine) - cutOff] = '\0'; // Cuts off the AVAILABLE_MARKER
       
+      //Build the right path for the GalaxyMap file
+      std::string temp = filename.substr(0,filename.find_last_of("/") + 1);
+      temp = temp+nextLine;
+      
       GalaxyMap* map = new GalaxyMap(GALAXY_MOVE_SPEED);
-      map->readMapFromFile(nextLine);
+      map->readMapFromFile(temp);
       
       World* world = new World(nextLine, map, available);
       
