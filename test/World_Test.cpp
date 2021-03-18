@@ -12,7 +12,7 @@ class World_Test : public testing::Test
    {
       map = new GalaxyMap(500);
       world1 = new World("Test World", map, true);
-      world1->getMap()->readMapFromFile("../data/Test World");
+      world1->getMap()->readMapFromFile("../data/test/Test World");
       world2 = new World("Test World", map);
    }
    
