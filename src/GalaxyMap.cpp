@@ -212,6 +212,10 @@ void GalaxyMap::readMapFromFile(std::string filename)
       
       specs.close();
    }
+   else
+   {
+      std::cout << "Unable to open GalaxyMap file " << filename << " for reading" << std::endl;
+   }
 }
 
 void GalaxyMap::readGalsFromFile(std::string filename, std::ifstream* file, char nextLine[], MapNode* nodes[], int* numGals)
@@ -228,9 +232,6 @@ void GalaxyMap::readGalsFromFile(std::string filename, std::ifstream* file, char
          cutOff = strlen(AVAILABLE_MARKER);
       }
       nextLine[strlen(nextLine) - cutOff] = '\0'; // Cuts off the AVAILABLE_MARKER
-      
-      GalaxyMap* map = new GalaxyMap(500);
-      map->readMapFromFile(nextLine);
       
       Galaxy* gal = new Galaxy(nextLine, available);
       
